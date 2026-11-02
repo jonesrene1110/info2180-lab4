@@ -1,5 +1,4 @@
 <?php
-
 $superheroes = [
   [
       "id" => 1,
@@ -63,6 +62,20 @@ $superheroes = [
   ], 
 ];
 
+$query = trim($_GET['query'] ?? '');
+
+if ($query !== '') {
+    $superheroes = array_filter($superheroes, function ($hero) use ($query) {
+        return stripos($hero['name'], $query) !== false ||
+               stripos($hero['alias'], $query) !== false;
+    });
+
+    $superheroes = array_values($superheroes);
+}
+
+header('Content-Type: application/json; charset=utf-8');
+echo json_encode($superheroes);
+exit;
 ?>
 
 <ul>
